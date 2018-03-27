@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Success page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Boogaloo" rel="stylesheet">
+	<style>
+		.main{
+			display: flex;
+			background-color:#f1f4f8;
+			}
+
+		.box_2{
+			margin-left: 25%;
+		}
+
+		.third{
+
+			margin-top: 40%;
+		}
+		span{
+
+			text-decoration: underline;
+			font-family: Boogaloo, cursive;
+			font-size: 20px;
+		}
+		.messages{
+			color: red;
+			margin-left: 60%;
+		}
+		.quote_box{
+			overflow-y: scroll;
+			height: 500px;
+			margin-left:40%;
+			width: 500px;
+			border: black solid 2px;
+
+		}
+		.inside{
+			border: black 2px solid;
+			width:400px;
+			margin: 20px;
+			text-align: center;
+		}
+		.fav_box{
+			overflow-y: scroll;
+			border: black solid 2px;
+			height: 300px;
+			width: 250px;
+		}
+		.fav_inside{
+			border: solid black 2px;
+			margin: 10px;
+			text-align: center;
+		}
+		.q_heading{
+			
+			margin-left:60%;
+		}
+		h1{
+			font-family: Boogaloo, cursive;
+			margin-left: 30px;
+			margin-top: 30px;
+		}
+		.logout{
+			text-decoration: underline;
+			margin-left: 30px;
+		
+	</style>
+</head>
+<body>
+	<a href="/logout" class="logout">Logout</a>
+	<div class="main">
+		<div class="first">
+			<h1>Welcome, {{user.name}}</h1>
+
+			<h4 class="q_heading">Quotable Quotes</h4>
+			<div class="quote_box">
+				{%for quote in all_quotes%}
+				<div class="inside">
+					<p><span>{{quote.name}}:</span></p>
+					<p>{{quote.content}}</p>
+					<p>Posted By:<a href="/user_info/{{quote.created_by.id}}">{{quote.created_by.name}}</a></p>
+					<a href="/add_to_list/{{quote.id}}"><button class="btn btn-outline-info">Add to My List</button></a>
+
+					{% if quote.created_by.id == request.session.user_id %}
+						<a href="/delete/{{quote.id}}"> Delete this Quote</a>
+					
+					
+					{%endif%}
+
+				</div>
+				{%endfor%}
+
+			</div>
+		</div>
+			<div class="box_2">
+				<div class='second'>
+					<legend class="text-center">Your Favorites</legend>
+					<div class="fav_box">
+						{%for favorite in favorites%}
+						<div class="fav_inside">
+							<p>{{favorite.quote.content}}</p>
+						<a href="/remove/{{favorite.quote.id}}">Remove this qoute</a>
+						</div>
+						{%endfor%}
+					</div>
+				</div>
+		
+			<div class="third">
+				<h3>Contribute A quote</h3>
+				<form action="/add_quote/{{user.id}}" method="post">
+					{%csrf_token%}
+						<div  class="form-group">
+							<label>Quoted By:</label>
+							<input type="text" name="name" class="form-control form-control-sm">
+							<label>Message:</label>
+							<textarea name="content" placeholder="Your quote here" class="form-control form-control-sm"></textarea>
+							<button type="Submit" class="btn btn-primary">Submit</button>
+					</div>
+				</form>
+
+		</div>
+		</div>
+	</div>
+					{% if messages %}
+						<ul class="messages">
+							  {% for message in messages %}
+								<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+								{% endfor %}
+						</ul>
+					{% endif %}
+			
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>User info</title>
+	<link href="https://fonts.googleapis.com/css?family=Boogaloo" rel="stylesheet">
+	<style>
+
+		body{
+			background-color:#f1f4f8;
+		}
+		span{
+			color:#7a48cb;
+			font-family: Boogaloo, cursive;
+			font-size: 30px;
+		}
+		.main{
+			margin-left: 20px;
+
+		}
+		
+	</style>
+</head>
+<body>
+	<div class="main">
+	<a href="/logout">Logout</a>
+	<a href="/success">Dashboard</a>
+	<h1> Poted by: {{user.name}}</h1>
+	<p>Total Quotes: {{your_quotes|length}}</p>
+	
+	<ul>
+		{%for quote in your_quotes%}
+			<p><span>{{quote.name}}</span>:<br> {{quote.content}}</p>
+		
+		{%endfor%}
+	</ul>
+	</div>
+
+</body>
+</html>
